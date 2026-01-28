@@ -37,6 +37,15 @@ print("Hi, I am Arka, a professional, enthusiastic and friendly AI developer. I 
 
 
 langchain_history = []
+# def chat(user_input, hist):
+#     #print(user_input, hist)
+#     for user_msg, ai_msg in hist:
+#         langchain_history.append(HumanMessage(content=user_msg))
+#         langchain_history.append(AIMessage(content=ai_msg))
+
+#     response = chain.invoke({"input": user_input, "history": langchain_history})
+#     return "", hist + [(user_input, response)]
+
 def chat(user_input, hist):
     #print(user_input, hist)
     for item in hist:
@@ -47,8 +56,8 @@ def chat(user_input, hist):
 
     response = chain.invoke({"input": user_input, "history": langchain_history})
     return "", hist + [{"role": "user", "content": user_input},
-                        {"role": "assistant", "content": response},
-                       ]
+                        {"role": "assistant", "content": response}]
+
 
 
 # while True:
@@ -69,9 +78,7 @@ def chat(user_input, hist):
 
 page = gr.Blocks(
     title="Chat with Arka",
-    theme=gr.themes.Soft(),
-    #footer { display: none !important; }     /* older builds */
-
+    # theme=gr.themes.Soft(),  # Moved to launch()
 )
 with page:
     gr.Markdown(
@@ -80,16 +87,9 @@ with page:
         <p style="text-align: center;">An AI chatbot </p>
         """
     )
-    chatbot = gr.Chatbot( type="messages", avatar_images=[None, "D:\customAIAgent\myimg.jpg"], height=200, show_label=False)
+    chatbot = gr.Chatbot(avatar_images=[None, r"D:\customAIAgent\myimg.jpg"], height=200, show_label=False)
     msg = gr.Textbox(placeholder="Enter your message:", show_label=False)
     msg.submit(chat, [msg, chatbot], [msg, chatbot])
     clear = gr.Button("Clear")
-
-    # def respond(message, chat_history):
-    #     response = chain.invoke({"input": message, "history": chat_history})
-    #     chat_history.append((message, response))
-    #     return "", chat_history
-
-    msg.submit(chat, [msg, chatbot], [msg, chatbot])
-    clear.click(lambda: None, None, chatbot, queue=False)
-    page.launch(share=True)
+    clear.click(lambda: [], None, chatbot, queue=False)
+    page.launch(share=True, theme=gr.themes.Soft())
