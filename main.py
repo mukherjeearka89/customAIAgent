@@ -93,3 +93,4 @@ with page:
     clear = gr.Button("Clear")
     clear.click(lambda: [], None, chatbot, queue=False)
     page.launch(share=True, theme=gr.themes.Soft())
+    page.launch(share=True, theme=gr.themes.Soft())
